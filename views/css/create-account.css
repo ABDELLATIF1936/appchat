@@ -6,3 +6,10 @@ body{
     height: 100vh;
     display: flex;
 }
+.container{
+    color: white;
+}
+.card{
+    background-color: #18788982;
+    border-radius: 10px;
+}

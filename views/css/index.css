@@ -6,42 +6,15 @@ body{
     height: 100vh;
     display: flex;
 }
-.centent {
+.container{
+    color: white;
+}
+.card{
     background-color: #18788982;
-    padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: absolute;
-    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 360px;
+    top: 50%;
+    transform: translate(-50%);
+    width: 400px;
 }
-.form-group {
-    margin-bottom: 15px;
-}
-#create-account-link{
-direction: none;
-}
-.btn-block {
-    width: 100%;
-    border: none;
-    background-color: rgba(0, 225, 255, 0.525);
-}
-.btn {
-    display: block;
-    margin: 0 auto;
-    border-radius: 10px;
-}
-label{
-    font-size: 15px;
-    font-weight: 900;
-}
-form h2{
-    text-align: center;
-    font-weight: 600;
-}
-.form-control{
-    border-radius: 10px;
-}
-
