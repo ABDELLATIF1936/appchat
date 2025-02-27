@@ -107,13 +107,13 @@ body{
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 5px;
     padding: 10px;
-    height: 300px; /* Set height */
+    height:300px; /* Set height */
     overflow-y: auto; /* Allow vertical scrolling */
     margin-left: 10px; /* Space between lists */
     flex-grow: 1; /* Allow to fill available space */
 }
 .message {
-    background-color: rgba(255, 255, 255, 0.8); /* Light background */
+    background-color: rgba(233, 225, 225, 0.8); /* Light background */
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 10px;
