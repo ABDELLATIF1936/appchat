@@ -1,10 +1,13 @@
 body{
-    background-image: linear-gradient(to right, rgb(2, 33, 36) 30%, rgb(40, 167, 167)), url(/views/image/image1.jpeg);
+    background-image: linear-gradient(to right, rgb(2, 33, 36) 30%, rgb(40, 167, 167));
     background-size: cover; /* Ajuste l'image à la taille de l'écran */
     background-position: center; /* Centre l'image */
     background-blend-mode: multiply; /* Mélange les couleurs et l'image */
     height: 100vh;
     display: flex;
+    color: #ddd;
+    justify-content: space-between;
+    gap: 20px;
 }
 
 .menu{
@@ -33,9 +36,118 @@ body{
     font-size: 25px;
 }
 .menu:hover{
-    width: 200px;
+    width: 300px;
 }
 .menu a:hover{
     background-color: aqua;
     color:rgb(15, 15, 15);
+}
+.container {
+    margin-top: 50px;
+    background: rgb(40, 167, 167);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    max-width: 1000px; /* Set max width */
+    margin-left: auto; /* Centering */
+    margin-right: auto; /* Centering */
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+}
+#roomName {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #FFD700; /* Gold color */
+}
+.chat-wrapper {
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+#usersList {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    padding: 10px;
+    height: 300px; /* Set height to match messages div */
+    overflow-y: auto; /* Allow vertical scrolling */
+    width: 200px; /* Fixed width for user list */
+
+}
+
+#usersList h5 {
+    margin-bottom: 10px;      /* Space between title and list */
+    font-size: 18px;         /* Title font size */
+
+}
+
+
+#userListItems {
+    list-style-type: none;    /* Remove bullet points */
+    padding: 0;               /* Remove padding */
+    margin: 0;                /* Remove margin */
+}
+
+#userListItems li {
+    padding: 10px;            /* Padding for each list item */
+    border-bottom: 1px solid #ddd; /* Bottom border for separation */
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+#userListItems li:hover {
+    background-color: #1cb5c3; /* Change background on hover */
+}
+
+#userListItems li:last-child {
+    border-bottom: none;       /* Remove bottom border for the last item */
+}
+
+#messages {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+    padding: 10px;
+    height: 300px; /* Set height */
+    overflow-y: auto; /* Allow vertical scrolling */
+    margin-left: 10px; /* Space between lists */
+    flex-grow: 1; /* Allow to fill available space */
+}
+.message {
+    background-color: rgba(255, 255, 255, 0.8); /* Light background */
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    color: #333; /* Darker text color for contrast */
+}
+.username {
+    font-weight: bold;
+    font-size: 0.9em; /* Slightly smaller font size */
+    color: #007bff; /* Blue color for username */
+}
+.timestamp {
+    font-size: 0.8em; /* Smaller font size for timestamp */
+    color: #888; /* Light gray for timestamp */
+}
+.message-text {
+    margin-top: 5px; /* Space between username/timestamp and message */
+    word-wrap: break-word;
+}
+#messageInput {
+    width: calc(100% - 64px); /* Adjust for button */
+    margin-left: 10px; /* Space between input and button */
+}
+button {
+    border-radius: 5px;
+    background-color: #007bff; /* Button color */
+    border: 2px solid #0056b3; /* Border color */
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+}
+button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+button:active {
+    transform: translateY(0); /* Reset lift effect on click */
 }

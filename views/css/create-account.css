@@ -1,5 +1,5 @@
 body{
-    background-image: linear-gradient(to right, rgb(2, 33, 36) 30%, rgb(40, 167, 167)), url(/views/image/image1.jpeg);
+    background-image: linear-gradient(to right, rgb(2, 33, 36) 30%, rgb(40, 167, 167));
     background-size: cover; /* Ajuste l'image à la taille de l'écran */
     background-position: center; /* Centre l'image */
     background-blend-mode: multiply; /* Mélange les couleurs et l'image */

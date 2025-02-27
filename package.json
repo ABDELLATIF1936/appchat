@@ -1,0 +1,30 @@
+{
+  "name": "appchat",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon start serverwr"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ABDELLATIF1936/appchat.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ABDELLATIF1936/appchat/issues"
+  },
+  "homepage": "https://github.com/ABDELLATIF1936/appchat#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2",
+    "moment": "^2.30.1",
+    "mongodb": "^6.13.1",
+    "mongoose": "^8.10.2",
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

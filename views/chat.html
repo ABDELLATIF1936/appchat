@@ -11,13 +11,40 @@
 <body>
         <div class="menu">
             <div class="navbar-links">
-                <a href="#"><i class="fas fa-home"></i> Accueil</a>
+                <a href="./index.html"><i class="fas fa-home"></i> Accueil</a>
                 <a href="#"><i class="icon fas fa-user"></i> Profil</a>
                 <a href="#"><i class="icon fas fa-envelope"></i> Messages</a>
                 <a href="#"><i class="fas fa-users"></i> Groupes</a>
                 <a href="#"><i class="icon fas fa-cog"></i> Paramètres</a>
-                <a href="#"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
+                <a href="./index.html"><i class="fas fa-sign-out-alt"></i> Déconnexion</a>
             </div>
         </div>
+        <div class="container">
+            <h1 id="roomName">UML</h1>
+            <div class="chat-wrapper">
+                <div id="usersList">
+                    <h5><span style=" font-weight:700;">Utilisateurs dans la salle :</span></h5>
+                    <ul id="userListItems">
+                        <li>Mostafa</li>
+                        <li>Mohamed</li>
+                        <li>Ahmed</li>
+                    </ul>
+                </div>
+                <div id="messages">
+                    <h5>Messages :</h5>
+                    <div id="messageList">
+                    
+                    </div>
+                </div>
+            </div>
+            <form id="messageForm" class="form-inline">
+                <input type="text" id="messageInput" class="form-control" placeholder="Écrivez un message..." required>
+                <button type="submit" class="btn btn-outline-light">
+                    <i class="fas fa-paper-plane fa-lg"></i> <!-- Icône plus grande -->
+                </button>
+            </form>
+        </div>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="./js/script.js"></script>
 </body>
 </html>
