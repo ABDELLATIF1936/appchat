@@ -91,23 +91,51 @@ app.post("/login", async (req, res) => {
     }
 });
 
+
+
 io.on('connection' , socket => {
-    socket.on('joinRoom' , (joinedUser) => {
+    socket.on('joinRoom' , async (joinedUser) => {
         joinedUser.id = socket.id;
         const user =  userJoin(joinedUser);
         socket.join(user.room);
+
+         // Envoyer un message de bienvenue
         socket.emit("message",formatMessage(CHAT_BOT ,"Bienvenue sur le chat"));
         socket.broadcast.to(user.room).emit("message" , formatMessage(CHAT_BOT ,` ${user.username} a rejoint le chat  `));
-
+         // Récupérer les messages précédents depuis MongoDB pour cette salle
+        try {
+            const messages = await Message.find({ room: user.room }).sort({ createdAt: 1 }); // Tri par date croissante
+            socket.emit("previousMessages", messages); // Envoie les messages précédents au client
+        } catch (error) {
+            console.error("Erreur lors de la récupération des messages:", error);
+        }
+        // Mettre à jour les utilisateurs dans la salle
         io.to(user.room).emit("roomUsers" , {
             room : user.room,
             users:getRoomUsers(user.room)
         });
-    })
-
-    socket.on("chatMessage" , (msg) => {
+    });
+     // Recevoir un message de l'utilisateur
+    socket.on("chatMessage" , async (msg) => {
         const user = getCurrentUser(socket.id);
-        io.to(user.room).emit("message" , formatMessage(user.username,msg));
+        const message = formatMessage(user.username, msg);
+    });
+
+    socket.on("chatMessage", async (msg) => {
+        const user = getCurrentUser(socket.id);
+    
+        // Créer un nouveau message à partir des données de l'utilisateur et du message
+        const message = formatMessage(user.username, msg);
+    
+        // Sauvegarder le message dans MongoDB
+        await Message.create({
+            username: user.username,
+            text: msg,
+            room: user.room
+        });
+    
+        // Envoyer le message à la salle
+        io.to(user.room).emit("message", message);
     });
 
     socket.on('disconnect' , () => {
