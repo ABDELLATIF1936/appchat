@@ -18,10 +18,14 @@
   "homepage": "https://github.com/ABDELLATIF1936/appchat#readme",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "moment": "^2.30.1",
     "mongodb": "^6.13.1",
-    "mongoose": "^8.10.2",
+    "mongoose": "^8.11.0",
+    "nodemo": "^1.0.0",
+    "path": "^0.12.7",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {

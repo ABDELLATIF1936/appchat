@@ -14,14 +14,14 @@
             <div class="col-md-6">
                 <div class="card shadow-lg p-4">
                     <h2 class="text-center mb-4">Connexion</h2>
-                    <form id="joinForm">
-                        <div class="mb-3">
-                            <label for="username">Nom:</label>
-                            <input type="text" class="form-control" id="username">
-                        </div>
+                    <form id="joinForm" action="/login" method="post">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail:</label>
                             <input type="email" class="form-control" id="email" name="email"  required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username">Nom:</label>
+                            <input type="text" class="form-control" id="username" name="username">
                         </div>
                         <div class="mb-3">
                             <label for="password" class="form-label">Mot de passe:</label>
@@ -43,20 +43,17 @@
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
-    <script  >
+    <script>
         document.getElementById('joinForm')?.addEventListener('submit', (e) => {
             e.preventDefault();
-            const email = document.getElementById('email')?.value;
-            const password = document.getElementById('password')?.value;
-            const room = document.getElementById('room')?.value;
-            if (email && password  && room) {
-                localStorage.setItem('email', email);
-                localStorage.setItem('password', password);
+            const username = document.getElementById('username').value;
+            const room = document.getElementById('room').value;
+            if (username && room) {
+                localStorage.setItem('username', username);
                 localStorage.setItem('room', room);
                 window.location.href = 'chat.html';
             }
         });
     </script>
-
 </body>
 </html>
