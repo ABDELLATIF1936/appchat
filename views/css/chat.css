@@ -539,3 +539,73 @@ button:hover {
         right: 10px;
     }
 }
+
+
+/* Styles pour les mentions */
+.user-mention {
+    font-weight: bold;
+    color:var(--primary-color);
+    background-color:var(--text-dark);
+    padding: 2px 4px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.user-mention:hover {
+    background-color: var(--text-dark);
+}
+
+.mentioned-message {
+    animation: highlight-mention 2s ease;
+    border-left: 3px solid #ffc107;
+    background-color: rgba(255, 235, 59, 0.1);
+}
+
+@keyframes highlight-mention {
+    0% { background-color: rgba(255, 235, 59, 0.4); }
+    100% { background-color: rgba(255, 235, 59, 0.1); }
+}
+
+/* Styles pour la dropdown d'autocomplétion */
+.mention-dropdown {
+    position: absolute;
+    background-color:var(--background-light);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-height: 150px;
+    overflow-y: auto;
+    width: auto;
+    min-width: 100px;
+}
+
+.mention-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.mention-item:hover, 
+.mention-item.active {
+    background-color: #f5f5f5;
+}
+
+/* Styles pour les notifications de mention */
+.mention-notification {
+    border-left: 3px solid #3498db !important;
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+/* Style pour rendre les utilisateurs dans la liste cliquables */
+#userListItems li {
+    cursor: pointer;
+    transition: background-color 0.2s;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+#userListItems li:hover {
+    background-color: rgba(52, 152, 219, 0.1);
+}
