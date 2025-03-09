@@ -1,15 +1,56 @@
-body{
-    background-image: linear-gradient(to right, rgb(2, 33, 36) 30%, rgb(40, 167, 167));
-    background-size: cover; /* Ajuste l'image à la taille de l'écran */
-    background-position: center; /* Centre l'image */
-    background-blend-mode: multiply; /* Mélange les couleurs et l'image */
+:root {
+    --primary-color: #4c76a0; /* Bleu légèrement plus doux */
+    --secondary-color: #6d91b8; /* Bleu clair plus élégant */
+    --background-light: #f2f5f9; /* Blanc cassé pour moins d'agressivité */
+    --text-dark: #1e293b; /* Bleu-gris foncé pour un bon contraste */
+    --accent-color: #a3d9a5; /* Vert doux pour un effet apaisant */
+    --hover-color: #76b6c4; /* Bleu clair pour les survols */
+    --shadow-subtle: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, var(--primary-color), var(--hover-color));
     height: 100vh;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dark);
+    font-family: 'Inter', sans-serif;
+    gap: 20px;
 }
-.container{
-    color: white;
+
+/* Carte avec effet moderne */
+.card {
+    background: rgba(255, 255, 255, 0.2); 
+    border-radius: 15px;
+    padding: 30px;
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    height: 600px;
+    box-shadow: var(--shadow-medium);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: transform 0.3s ease-in-out;
 }
-.card{
-    background-color: #18788982;
-    border-radius: 10px;
+
+/* Effet au survol */
+.card:hover {
+    transform: scale(1.02);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .card {
+        width: 90%;
+        height: auto;
+        padding: 20px;
+    }
 }

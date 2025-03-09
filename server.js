@@ -39,6 +39,64 @@ mongoose.connect("mongodb+srv://abdellatifhh8:7kgoByYQFIRZqN0C@chatapp.kxw1s.mon
     console.error("Erreur de connexion à MongoDB :", err);
 });
 
+
+// Route pour récupérer les messages dans une salle
+app.post("/searchMessages", async (req, res) => {
+    const { room, query } = req.body;
+    try {
+        const messages = await Message.find({
+            room: room,
+            text: { $regex: query, $options: "i" } // Recherche insensible à la casse
+        }).sort({ createdAt: -1 }); // Tri décroissant par date
+
+        res.json(messages); // Retourner les messages filtrés au client
+    } catch (error) {
+        console.error("Erreur de recherche :", error);
+        res.status(500).json({ error: "Erreur lors de la recherche des messages." });
+    }
+});
+
+
+// Fonction pour traiter les mentions dans les messages
+function processMentions(message, roomUsers) {
+    // Recherche les motifs @username dans le message
+    const mentionRegex = /@(\w+)/g;
+    const mentions = message.match(mentionRegex) || [];
+    const mentionedUsers = [];
+
+    // Extraire les noms d'utilisateur des mentions (sans le @)
+    mentions.forEach(mention => {
+        const username = mention.substring(1); // Enlève le @ du début
+        // Vérifie si l'utilisateur mentionné existe dans la salle
+        const userExists = roomUsers.some(user => user.username.toLowerCase() === username.toLowerCase());
+        if (userExists) {
+            mentionedUsers.push(username);
+        }
+    });
+
+    return {
+        formattedMessage: message,
+        mentionedUsers: mentionedUsers
+    };
+}
+
+app.get("/api/users", async (req, res) => {
+    try {
+        const users = await User.find({}, "username"); // Récupère uniquement les noms d'utilisateur
+        res.json(users);
+    } catch (err) {
+        res.status(500).json({ error: "Erreur serveur" });
+    }
+});
+
+app.get("/login",(req,res) =>{
+    res.render("login");
+});
+
+app.get("/post",(req,res) =>{
+    res.render("post");
+});
+
 // Inscription
 app.post("/post", async (req, res) => {
     try {
@@ -49,12 +107,14 @@ app.post("/post", async (req, res) => {
         if (existingUser) {
             return res.status(400).send("Cet email est déjà utilisé !");
         }
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
         const user = new User({
             nom,
             prenom,
             email,
-            password,
+            password: hashedPassword,
             etablissement,
         });
 
@@ -70,27 +130,31 @@ app.post("/post", async (req, res) => {
 });
 
 
+// Connexion
 app.post("/login", async (req, res) => {
-    const { email, password } = req.body;
-    
     try {
-        // Vérifier si l'utilisateur existe dans la base de données
-        const user = await User.findOne({ email });
+        console.log("Données reçues :", req.body); // DEBUG
 
-        // Vérifier le mot de passe
-        if (user && user.password === password) {
-            return res.status(200).json({ message: "Connexion réussie", user });
+        const check = await User.findOne({ email: req.body.email });
+        if (!check) {
+            return res.status(401).json({ error: "Email incorrect." });
         }
 
-        // Si l'utilisateur n'existe pas ou mot de passe incorrect
-        return res.status(401).json({ error: "Email ou mot de passe incorrect." });
+        console.log("Mot de passe en base :", check.password); // DEBUG
 
+        const isPasswordValid = await bcrypt.compare(req.body.password, check.password);
+        console.log("Résultat comparaison bcrypt :", isPasswordValid); // DEBUG
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ error: "Mot de passe incorrect." });
+        }
+
+        res.json({ message: "Connexion réussie", username: check.nom });
     } catch (error) {
         console.error("Erreur lors de la connexion:", error);
-        return res.status(500).json({ error: "Erreur lors de la connexion. Veuillez réessayer." });
+        res.status(500).json({ error: "Erreur lors de la connexion. Veuillez réessayer." });
     }
 });
-
 
 
 io.on('connection' , socket => {
@@ -121,22 +185,43 @@ io.on('connection' , socket => {
         const message = formatMessage(user.username, msg);
     });
 
-    socket.on("chatMessage", async (msg) => {
-        const user = getCurrentUser(socket.id);
+   // Gestion des messages et des mentions
+   socket.on("chatMessage", async (msg) => {
+    const user = getCurrentUser(socket.id);
+    const roomUsers = getRoomUsers(user.room);
     
-        // Créer un nouveau message à partir des données de l'utilisateur et du message
-        const message = formatMessage(user.username, msg);
+    // Traite les mentions dans le message
+    const { formattedMessage, mentionedUsers } = processMentions(msg, roomUsers);
     
-        // Sauvegarder le message dans MongoDB
-        await Message.create({
-            username: user.username,
-            text: msg,
-            room: user.room
-        });
+    // Crée un nouveau message avec le format standard
+    const message = formatMessage(user.username, formattedMessage);
     
-        // Envoyer le message à la salle
-        io.to(user.room).emit("message", message);
+    // Ajouter la liste des utilisateurs mentionnés au message
+    message.mentions = mentionedUsers;
+    
+    // Sauvegarder le message dans MongoDB avec les mentions
+    await Message.create({
+        username: user.username,
+        text: formattedMessage,
+        room: user.room,
+        mentions: mentionedUsers,
+        createdAt: new Date()
     });
+    
+    // Envoyer le message à tous les utilisateurs dans la salle
+    io.to(user.room).emit("message", message);
+     // Envoyer des notifications spéciales aux utilisateurs mentionnés
+        mentionedUsers.forEach(mentionedUsername => {
+        const mentionedUser = roomUsers.find(u => u.username.toLowerCase() === mentionedUsername.toLowerCase());
+        if (mentionedUser) {
+            io.to(mentionedUser.id).emit("mentioned", {
+                from: user.username,
+                message: formattedMessage,
+                room: user.room
+            });
+        }
+    });
+}); 
 
     socket.on('disconnect' , () => {
         const user = userLeave(socket.id); 

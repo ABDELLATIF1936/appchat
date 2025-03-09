@@ -44,16 +44,39 @@
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        document.getElementById('joinForm')?.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const room = document.getElementById('room').value;
-            if (username && room) {
-                localStorage.setItem('username', username);
-                localStorage.setItem('room', room);
-                window.location.href = 'chat.html';
-            }
+        document.getElementById('joinForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const username=document.getElementById('username').value;
+    const room = document.getElementById('room').value;
+
+    console.log("Envoi des données :", { email, password ,username}); // DEBUG
+
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password ,username,room})
         });
+
+        const data = await response.json();
+        console.log("Réponse serveur :", data); // DEBUG
+
+        if (response.ok) {
+            // Sauvegarder le nom d'utilisateur dans localStorage
+            localStorage.setItem('username', data.username);
+            localStorage.setItem('room', room);
+            window.location.href = 'chat.html';
+        } else {
+            alert(data.error || "Email ou mot de passe incorrect.");
+        }
+    } catch (error) {
+        console.error("Erreur de connexion:", error);
+        alert("Une erreur s'est produite. Veuillez réessayer.");
+    }
+});
     </script>
 </body>
 </html>
